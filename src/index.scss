@@ -13,12 +13,16 @@
 }
 
 .imageBackground {
-  background-image: linear-gradient(to bottom, #252525ab, #252525ab),
+  background-image: linear-gradient(to bottom, #252525c0, #252525c0),
     url("./assets/vegetables.jpg");
   min-height: calc(100vh - $header_height);
   background-repeat: none;
   background-position: center;
   background-size: cover;
+  background-attachment: fixed;
+
+  flex-direction: column;
+  justify-content: center;
 }
 
 .home_illustration {

@@ -22,46 +22,59 @@ const placeholderArray = [
   "Tomato",
 ];
 
-// TO-DO's
-// Add quantity input to the add-item form next to the textInput
+interface ShoppingItem {
+  id: number | string;
+  name: string;
+  quantity?: string | number;
+}
 
 const GroceryList: FC = () => {
   // Get the initial values from localstorage if there are any
   const storedGroceryList = localStorage.getItem("shoppingList");
-  let initialState: string[] = [];
+  let initialState: [] = [];
 
   if (storedGroceryList) initialState = JSON.parse(storedGroceryList);
 
-  const [inputValue, setInputValue] = useState<string>("");
-  const [shoppingList, setShoppingList] = useState<string[]>(
+  const [itemName, setItemName] = useState<string>("");
+  const [itemQuantity, setItemQuantity] = useState<string>("");
+  const [shoppingItem, setShoppingItem] = useState<ShoppingItem | undefined>();
+
+  const [shoppingList, setShoppingList] = useState<ShoppingItem[]>(
     initialState.length >= 1 ? initialState : []
   );
 
+  console.log(shoppingItem);
+  console.log(shoppingList);
+
   useEffect(() => {
+    if (shoppingItem !== undefined) {
+      setShoppingList((prevState) => [...prevState, shoppingItem]);
+      setShoppingItem(undefined);
+    }
+
     localStorage.setItem("shoppingList", JSON.stringify(shoppingList));
-  }, [shoppingList]);
+  }, [shoppingItem, shoppingList]);
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    try {
-      setShoppingList((prevState) => [...prevState, inputValue]);
-    } catch {
-      console.log("Nothing was added");
-    } finally {
-      setInputValue("");
-    }
+
+    setShoppingItem({
+      id: shoppingList.length + 1,
+      name: itemName,
+      quantity: itemQuantity || "",
+    });
+
+    setItemName("");
+    setItemQuantity("");
   };
 
-  const deleteItem = (item: string) => {
-    // Perform delete action on the selected item
-    const itemIndex = shoppingList.indexOf(item, 0);
-    if (itemIndex >= 0) {
-      setShoppingList(
-        shoppingList.filter((value) => {
-          return value !== item;
-        })
-      );
-    }
+  const deleteItem = (item: ShoppingItem) => {
+    // Perform delete action on the selected itemName
+    setShoppingList(
+      shoppingList.filter((value) => {
+        return value !== item;
+      })
+    );
   };
 
   const pickRandomPlaceholder = () => {
@@ -87,23 +100,40 @@ const GroceryList: FC = () => {
               fontFamily: theme.other.fontLato,
             })}
           >
-            Manage your shopping
+            Grocery manager
           </Text>
 
           <Center sx={{ padding: "1rem" }}>
             <form onSubmit={onSubmit} style={{ width: "100%" }}>
-              <TextInput
-                required
-                size="sm"
-                label="Add item"
-                placeholder={pickRandomPlaceholder()}
-                variant="default"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                sx={(theme) => ({
-                  fontFamily: theme.other.fontLato,
-                })}
-              />
+              <div style={{ display: "flex" }}>
+                <TextInput
+                  required
+                  size="sm"
+                  label="Item"
+                  placeholder={pickRandomPlaceholder()}
+                  variant="default"
+                  value={itemName}
+                  onChange={(e) => setItemName(e.target.value)}
+                  sx={(theme) => ({
+                    fontFamily: theme.other.fontLato,
+                    width: "70%",
+                  })}
+                />
+                <TextInput
+                  size="sm"
+                  label="Quantity"
+                  placeholder={"1"}
+                  variant="default"
+                  value={itemQuantity}
+                  type="number"
+                  onChange={(e) => setItemQuantity(e.target.value)}
+                  sx={(theme) => ({
+                    fontFamily: theme.other.fontLato,
+                    width: "25%",
+                    marginLeft: "5%",
+                  })}
+                />
+              </div>
               <Button
                 type="submit"
                 fullWidth
@@ -122,28 +152,36 @@ const GroceryList: FC = () => {
           <Container sx={{ display: "flex", flexDirection: "column" }}>
             <Text
               align="left"
-              size="md"
+              size="sm"
               sx={(theme) => ({
                 fontFamily: theme.other.fontPoppins,
               })}
             >
-              Your list:
+              Shopping list:
             </Text>
             <List listStyleType="none" type="unordered" sx={{ width: "100%" }}>
-              {shoppingList &&
-                shoppingList.map((listItem, i) => {
-                  return (
-                    <List.Item key={i} onMouseDown={() => deleteItem(listItem)}>
+              {shoppingList.map((listItem, i) => {
+                return (
+                  <List.Item key={i}>
+                    <Box
+                      sx={(theme) => ({
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: theme.spacing.xs,
+                        padding: "0.5rem",
+                        textAlign: "left",
+                        background:
+                          theme.colorScheme === "dark"
+                            ? theme.colors.dark[5]
+                            : theme.colors.grey[1],
+                        borderRadius: "5px",
+                      })}
+                    >
                       <Box
                         sx={(theme) => ({
-                          marginTop: theme.spacing.xs,
-                          padding: "0.5rem",
-                          textAlign: "left",
-                          background:
-                            theme.colorScheme === "dark"
-                              ? theme.colors.dark[5]
-                              : theme.colors.grey[1],
-                          borderRadius: "5px",
+                          display: "flex",
+                          alignItems: "center",
                         })}
                       >
                         <Text
@@ -153,12 +191,33 @@ const GroceryList: FC = () => {
                             fontSize: theme.fontSizes.sm,
                           })}
                         >
-                          {listItem}
+                          {listItem.name}
+                        </Text>
+                        <Text
+                          sx={(theme) => ({
+                            fontFamily: theme.other.fontPoppins,
+                            fontSize: theme.fontSizes.sm,
+                            marginLeft: "1rem",
+                          })}
+                        >
+                          {listItem.quantity && `x${listItem.quantity}`}
                         </Text>
                       </Box>
-                    </List.Item>
-                  );
-                })}
+
+                      <Button
+                        type="button"
+                        onClick={() => deleteItem(listItem)}
+                        sx={(theme) => ({
+                          background: "none",
+                          color: theme.colors.red,
+                        })}
+                      >
+                        Delete
+                      </Button>
+                    </Box>
+                  </List.Item>
+                );
+              })}
             </List>
           </Container>
         </Container>

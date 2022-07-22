@@ -1,15 +1,16 @@
-import { Center, Text } from "@mantine/core";
-import React, { FC } from "react";
+import { Text } from "@mantine/core";
+import { FC } from "react";
 
 import CustomHeader from "../components/Header";
 
 import ShoppingBag from "../assets/grocerybag.png";
+import PageLayout from "../components/PageLayout";
 
 const Home: FC = () => {
   return (
     <>
       <CustomHeader />
-      <div className="imageBackground" style={{ paddingTop: "45%" }}>
+      <PageLayout centerContent={true}>
         <Text
           component="h2"
           align="center"
@@ -35,7 +36,7 @@ const Home: FC = () => {
         <div className="home_illustration">
           <img src={ShoppingBag} alt="A shopping bag" />
         </div>
-      </div>
+      </PageLayout>
     </>
   );
 };
