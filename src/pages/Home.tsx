@@ -30,7 +30,7 @@ const Home: FC = () => {
             fontSize: "0.7rem",
           })}
         >
-          An app by ChrisDville
+          by SoftwareDevChris
         </Text>
 
         <div className="home_illustration">

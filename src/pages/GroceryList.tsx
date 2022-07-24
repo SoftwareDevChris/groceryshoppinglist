@@ -44,7 +44,7 @@ const GroceryList: FC = () => {
   );
 
   console.log(shoppingItem);
-  console.log(shoppingList);
+  console.log(shoppingList.length);
 
   useEffect(() => {
     if (shoppingItem !== undefined) {
@@ -78,11 +78,13 @@ const GroceryList: FC = () => {
   };
 
   const pickRandomPlaceholder = () => {
-    const placeholderItemNumber = Math.floor(
-      Math.random() * placeholderArray.length
-    );
-    const getRandomItem = placeholderArray[placeholderItemNumber];
-    return getRandomItem + "...";
+    if (!itemName) {
+      const placeholderItemNumber = Math.floor(
+        Math.random() * placeholderArray.length
+      );
+      const getRandomItem = placeholderArray[placeholderItemNumber];
+      return getRandomItem + "...";
+    }
   };
 
   return (
@@ -90,7 +92,12 @@ const GroceryList: FC = () => {
       <CustomHeader />
 
       <div className="imageBackground">
-        <Container p="md">
+        <Container
+          p="md"
+          sx={(theme) => ({
+            maxWidth: "600px",
+          })}
+        >
           {/* Headline */}
           <Text
             size="lg"
@@ -126,6 +133,7 @@ const GroceryList: FC = () => {
                   variant="default"
                   value={itemQuantity}
                   type="number"
+                  defaultValue="1"
                   onChange={(e) => setItemQuantity(e.target.value)}
                   sx={(theme) => ({
                     fontFamily: theme.other.fontLato,
@@ -137,29 +145,21 @@ const GroceryList: FC = () => {
               <Button
                 type="submit"
                 fullWidth
-                title="Submit"
+                title="Add item"
                 sx={(theme) => ({
                   margin: "1rem 0",
                   fontFamily: theme.other.fontPoppins,
                   fontWeight: 400,
                 })}
               >
-                Submit
+                Add item
               </Button>
             </form>
           </Center>
 
           <Container sx={{ display: "flex", flexDirection: "column" }}>
-            <Text
-              align="left"
-              size="sm"
-              sx={(theme) => ({
-                fontFamily: theme.other.fontPoppins,
-              })}
-            >
-              Shopping list:
-            </Text>
             <List listStyleType="none" type="unordered" sx={{ width: "100%" }}>
+              {shoppingList.length < 1 && <Text align="center">No items</Text>}
               {shoppingList.map((listItem, i) => {
                 return (
                   <List.Item key={i}>

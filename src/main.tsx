@@ -32,7 +32,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route index element={<Home />} />
-          <Route path="grocery-list" element={<GroceryList />} />
+          <Route path="shopping-list" element={<GroceryList />} />
         </Routes>
       </BrowserRouter>
     </MantineProvider>

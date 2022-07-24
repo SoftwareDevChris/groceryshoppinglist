@@ -15,34 +15,62 @@
     display: flex;
     align-items: center;
   }
+}
 
-  .burgerMenuContainer {
-    position: absolute;
-    height: $header_height;
-    display: flex;
-    align-items: center;
-  }
+.brandLogo {
+  margin: 0 auto;
+  cursor: pointer;
+}
 
-  .brandLogo {
-    margin: 0 auto;
-  }
+.burgerMenuContainer {
+  position: absolute;
+  height: $header_height;
+  display: flex;
+  align-items: center;
+}
 
-  .mobileMenu {
-    position: absolute;
-    top: $header_height;
-    left: 0;
+.mobileMenu {
+  position: absolute;
+  top: $header_height;
+  left: 0;
 
-    z-index: 10;
+  z-index: 10;
 
-    display: block;
-    width: 100%;
-    padding: 1rem;
-    background-color: #f8f9fa;
+  display: block;
+  width: 100%;
+  padding: 1rem 0;
+  background-color: #f8f9fa;
+}
+
+.webMenu {
+  display: flex;
+  display: none;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    margin-left: 1rem;
   }
 }
 
-@media only screen and (min-width: 375px) {
+@media only screen and (min-width: 720px) {
   .mobileMenu {
     display: none;
+  }
+
+  .webMenu {
+    display: flex;
+  }
+
+  .burgerMenuContainer {
+    display: none;
+  }
+
+  .brandLogo {
+    margin: 0;
+  }
+
+  nav {
+    justify-content: space-between;
   }
 }
