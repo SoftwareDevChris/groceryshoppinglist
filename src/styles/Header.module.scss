@@ -1,9 +1,10 @@
-@import "./master";
+@import "./variables";
 
 .header {
   height: $header_height;
   width: 100%;
-  border-bottom: 1px solid #f8f9fa;
+  background-color: $dark;
+  border-bottom: 1px solid $light;
   display: flex;
   padding: 0 1rem;
 
@@ -14,12 +15,17 @@
     width: 100%;
     display: flex;
     align-items: center;
+    color: $light;
+    font-family: "Montserrat";
   }
 }
 
 .brandLogo {
   margin: 0 auto;
   cursor: pointer;
+  color: inherit;
+  text-transform: uppercase;
+  font-family: "Roboto";
 }
 
 .burgerMenuContainer {
@@ -27,6 +33,7 @@
   height: $header_height;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .mobileMenu {
@@ -36,10 +43,22 @@
 
   z-index: 10;
 
+  list-style-type: none;
+
   display: block;
   width: 100%;
-  padding: 1rem 0;
-  background-color: #f8f9fa;
+  padding: 1rem;
+  background-color: $light;
+
+  font-size: 1rem;
+  font-weight: 500;
+  color: $dark;
+
+  .mobileListItem {
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    cursor: pointer;
+  }
 }
 
 .webMenu {
@@ -47,8 +66,6 @@
   display: none;
 
   a {
-    text-decoration: none;
-    color: inherit;
     margin-left: 1rem;
   }
 }

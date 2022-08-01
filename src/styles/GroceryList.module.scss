@@ -1,0 +1,108 @@
+@import "./variables";
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.h3 {
+  font-family: "Lato";
+  font-weight: 600;
+  text-align: center;
+  color: $light;
+  padding: 1rem;
+}
+
+.form {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Roboto";
+
+  .formRow {
+    display: flex;
+    margin: 1rem 0;
+    width: 100%;
+  }
+
+  input:nth-child(1) {
+    height: 33px;
+    padding: 0.25rem;
+    border: 1px solid $dark;
+    border-radius: 5px;
+    background: $dark;
+    color: $light;
+    width: 70%;
+  }
+
+  input:nth-child(2) {
+    height: 33px;
+    padding: 0.25rem;
+    border: 1px solid $dark;
+    border-radius: 5px;
+    background: $dark;
+    color: $light;
+
+    width: 25%;
+    margin-left: 5%;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: $dark-200;
+  }
+
+  .button {
+    background-color: $primary;
+    color: $light;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    height: 35px;
+    padding: 0.7rem 1.4rem;
+    font-family: "Roboto";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+}
+
+.shoppingList {
+  padding: 1rem;
+  list-style-type: none;
+  color: $light;
+  font-family: "Poppins";
+
+  .shoppingListItem {
+    background: $dark;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+    padding: 0.6rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .shoppingItemContent {
+    display: flex;
+  }
+
+  .shoppingItemName {
+    text-transform: capitalize;
+  }
+
+  .shoppingItemQuantity {
+    text-transform: lowercase;
+    margin-left: 0.6rem;
+  }
+
+  .deleteShoppingItem {
+    background: none;
+    border: none;
+    color: $delete;
+    cursor: pointer;
+  }
+}

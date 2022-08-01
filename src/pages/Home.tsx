@@ -1,7 +1,8 @@
-import { Text } from "@mantine/core";
 import { FC } from "react";
 
-import CustomHeader from "../components/Header";
+import { motion } from "framer-motion";
+
+import styles from "../styles/Home.module.scss";
 
 import ShoppingBag from "../assets/grocerybag.png";
 import PageLayout from "../components/PageLayout";
@@ -9,33 +10,26 @@ import PageLayout from "../components/PageLayout";
 const Home: FC = () => {
   return (
     <>
-      <CustomHeader />
       <PageLayout centerContent={true}>
-        <Text
-          component="h2"
-          align="center"
-          pt="xl"
-          sx={(theme) => ({
-            fontFamily: theme.other.fontLobster,
-            fontSize: "2rem",
-          })}
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
         >
-          Shopping List
-        </Text>
-        <Text
-          component="p"
-          align="center"
-          sx={(theme) => ({
-            fontFamily: theme.other.fontLato,
-            fontSize: "0.7rem",
-          })}
-        >
-          by SoftwareDevChris
-        </Text>
+          <h2 style={{ fontSize: "2rem" }} className={styles.h2}>
+            Shopping List
+          </h2>
+          <p className={styles.madeBy}>by SoftwareDevChris</p>
+        </motion.div>
 
-        <div className="home_illustration">
+        <motion.div
+          className={styles.home_illustration}
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
           <img src={ShoppingBag} alt="A shopping bag" />
-        </div>
+        </motion.div>
       </PageLayout>
     </>
   );

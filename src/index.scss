@@ -1,4 +1,4 @@
-@import "./styles/master";
+@import "./styles/variables";
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Lobster&family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap");
 
 * {
@@ -12,27 +12,22 @@
   margin: 0 auto;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .imageBackground {
   background-image: linear-gradient(to bottom, #252525c0, #252525c0),
     url("./assets/vegetables.jpg");
   min-height: calc(100vh - $header_height);
   background-repeat: none;
-  background-position: center;
   background-size: cover;
   background-attachment: fixed;
+  background-position: center;
+
+  overflow: hidden;
 
   flex-direction: column;
   justify-content: center;
-}
-
-.home_illustration {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-
-  img {
-    height: 160px;
-    width: 160px;
-  }
 }

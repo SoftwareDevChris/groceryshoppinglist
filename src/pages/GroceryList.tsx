@@ -1,25 +1,20 @@
-import {
-  Center,
-  Container,
-  TextInput,
-  Text,
-  List,
-  Button,
-  Box,
-} from "@mantine/core";
-import React, { FC, SyntheticEvent, useEffect, useState } from "react";
+import { FC, SyntheticEvent, useEffect, useState, useRef } from "react";
 
-import CustomHeader from "../components/Header";
+import { AnimatePresence, motion } from "framer-motion";
+
+import styles from "../styles/GroceryList.module.scss";
+
+import PageLayout from "../components/PageLayout";
 
 const placeholderArray = [
   "Bread",
   "Bananas",
   "Milk",
   "Avocados",
-  "Chili",
+  "Chilisauce",
   "Beer",
   "Butter",
-  "Tomato",
+  "Tomatoes",
 ];
 
 interface ShoppingItem {
@@ -36,15 +31,15 @@ const GroceryList: FC = () => {
   if (storedGroceryList) initialState = JSON.parse(storedGroceryList);
 
   const [itemName, setItemName] = useState<string>("");
-  const [itemQuantity, setItemQuantity] = useState<string>("");
+  const [itemQuantity, setItemQuantity] = useState<number>(1);
   const [shoppingItem, setShoppingItem] = useState<ShoppingItem | undefined>();
 
   const [shoppingList, setShoppingList] = useState<ShoppingItem[]>(
     initialState.length >= 1 ? initialState : []
   );
 
-  console.log(shoppingItem);
-  console.log(shoppingList.length);
+  // console.log(shoppingItem);
+  // console.log(shoppingList.length);
 
   useEffect(() => {
     if (shoppingItem !== undefined) {
@@ -65,7 +60,7 @@ const GroceryList: FC = () => {
     });
 
     setItemName("");
-    setItemQuantity("");
+    setItemQuantity(1);
   };
 
   const deleteItem = (item: ShoppingItem) => {
@@ -89,139 +84,73 @@ const GroceryList: FC = () => {
 
   return (
     <>
-      <CustomHeader />
-
-      <div className="imageBackground">
-        <Container
-          p="md"
-          sx={(theme) => ({
-            maxWidth: "600px",
-          })}
-        >
+      <PageLayout>
+        <div className={styles.container}>
           {/* Headline */}
-          <Text
-            size="lg"
-            weight={600}
-            align="center"
-            sx={(theme) => ({
-              fontFamily: theme.other.fontLato,
+          <h3 className={styles.h3} style={{ fontSize: "1.2rem" }}>
+            List manager
+          </h3>
+
+          <form onSubmit={onSubmit} className={styles.form}>
+            <div className={styles.formRow}>
+              <input
+                type="text"
+                name="itemName"
+                id="inputItemName"
+                value={itemName}
+                onChange={(e) => setItemName(e.target.value)}
+                placeholder={pickRandomPlaceholder()}
+                required
+              />
+              <input
+                type="text"
+                name="itemQuantity"
+                id="inputQuantity"
+                defaultValue={1}
+                onChange={(e) => setItemQuantity(+e.target.value)}
+                placeholder="1"
+              />
+            </div>
+            <motion.button className={styles.button} whileTap={{ scale: 0.9 }}>
+              Add item
+            </motion.button>
+          </form>
+
+          <ul className={styles.shoppingList}>
+            {shoppingList.length < 1 && (
+              <p className="noItems" style={{ textAlign: "center" }}>
+                No items
+              </p>
+            )}
+            {shoppingList.map((listItem, i) => {
+              return (
+                <motion.li
+                  key={i}
+                  className={styles.shoppingListItem}
+                  initial={{ opacity: 0, x: -200 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                  exit={{ opacity: 0, x: -200 }}
+                >
+                  <div className={styles.shoppingItemContent}>
+                    <p className={styles.shoppingItemName}>{listItem.name}</p>
+                    <p className={styles.shoppingItemQuantity}>
+                      {listItem.quantity && `x${listItem.quantity}`}
+                    </p>
+                  </div>
+
+                  <button
+                    className={styles.deleteShoppingItem}
+                    onClick={() => deleteItem(listItem)}
+                  >
+                    Delete
+                  </button>
+                </motion.li>
+              );
             })}
-          >
-            Grocery manager
-          </Text>
-
-          <Center sx={{ padding: "1rem" }}>
-            <form onSubmit={onSubmit} style={{ width: "100%" }}>
-              <div style={{ display: "flex" }}>
-                <TextInput
-                  required
-                  size="sm"
-                  label="Item"
-                  placeholder={pickRandomPlaceholder()}
-                  variant="default"
-                  value={itemName}
-                  onChange={(e) => setItemName(e.target.value)}
-                  sx={(theme) => ({
-                    fontFamily: theme.other.fontLato,
-                    width: "70%",
-                  })}
-                />
-                <TextInput
-                  size="sm"
-                  label="Quantity"
-                  placeholder={"1"}
-                  variant="default"
-                  value={itemQuantity}
-                  type="number"
-                  defaultValue="1"
-                  onChange={(e) => setItemQuantity(e.target.value)}
-                  sx={(theme) => ({
-                    fontFamily: theme.other.fontLato,
-                    width: "25%",
-                    marginLeft: "5%",
-                  })}
-                />
-              </div>
-              <Button
-                type="submit"
-                fullWidth
-                title="Add item"
-                sx={(theme) => ({
-                  margin: "1rem 0",
-                  fontFamily: theme.other.fontPoppins,
-                  fontWeight: 400,
-                })}
-              >
-                Add item
-              </Button>
-            </form>
-          </Center>
-
-          <Container sx={{ display: "flex", flexDirection: "column" }}>
-            <List listStyleType="none" type="unordered" sx={{ width: "100%" }}>
-              {shoppingList.length < 1 && <Text align="center">No items</Text>}
-              {shoppingList.map((listItem, i) => {
-                return (
-                  <List.Item key={i}>
-                    <Box
-                      sx={(theme) => ({
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginTop: theme.spacing.xs,
-                        padding: "0.5rem",
-                        textAlign: "left",
-                        background:
-                          theme.colorScheme === "dark"
-                            ? theme.colors.dark[5]
-                            : theme.colors.grey[1],
-                        borderRadius: "5px",
-                      })}
-                    >
-                      <Box
-                        sx={(theme) => ({
-                          display: "flex",
-                          alignItems: "center",
-                        })}
-                      >
-                        <Text
-                          transform="capitalize"
-                          sx={(theme) => ({
-                            fontFamily: theme.other.fontPoppins,
-                            fontSize: theme.fontSizes.sm,
-                          })}
-                        >
-                          {listItem.name}
-                        </Text>
-                        <Text
-                          sx={(theme) => ({
-                            fontFamily: theme.other.fontPoppins,
-                            fontSize: theme.fontSizes.sm,
-                            marginLeft: "1rem",
-                          })}
-                        >
-                          {listItem.quantity && `x${listItem.quantity}`}
-                        </Text>
-                      </Box>
-
-                      <Button
-                        type="button"
-                        onClick={() => deleteItem(listItem)}
-                        sx={(theme) => ({
-                          background: "none",
-                          color: theme.colors.red,
-                        })}
-                      >
-                        Delete
-                      </Button>
-                    </Box>
-                  </List.Item>
-                );
-              })}
-            </List>
-          </Container>
-        </Container>
-      </div>
+          </ul>
+        </div>
+      </PageLayout>
     </>
   );
 };
