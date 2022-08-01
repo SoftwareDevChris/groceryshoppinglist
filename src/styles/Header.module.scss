@@ -41,7 +41,7 @@
   top: $header_height;
   left: 0;
 
-  z-index: 10;
+  z-index: 5;
 
   list-style-type: none;
 
@@ -55,9 +55,9 @@
   color: $dark;
 
   .mobileListItem {
-    margin-top: 0.4rem;
-    margin-bottom: 0.4rem;
+    margin: 1rem 0;
     cursor: pointer;
+    font-weight: 500;
   }
 }
 

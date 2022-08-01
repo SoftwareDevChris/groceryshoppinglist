@@ -1,8 +1,6 @@
-import React, { FC } from "react";
-
-import { useState } from "react";
-
-import { AiFillHome, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { FC, useState } from "react";
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { motion } from "framer-motion";
 
 import styles from "../styles/Header.module.scss";
 
@@ -27,14 +25,19 @@ const CustomHeader: FC = () => {
         </h1>
 
         {opened && (
-          <ul className={styles.mobileMenu}>
+          <motion.ul
+            className={styles.mobileMenu}
+            initial={{ x: -700 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
             <li className={styles.mobileListItem}>
               <a href="/">Home</a>
             </li>
             <li className={styles.mobileListItem}>
               <a href="/shopping-list">Shopping List</a>
             </li>
-          </ul>
+          </motion.ul>
         )}
 
         <div className={styles.webMenu}>
